@@ -1,0 +1,6 @@
+["atlas","dipped"]	{"dice":0.4,"jaccard":0.25}
+["atlas","boon"]	{"dice":0.4,"jaccard":0.25}
+["atlas","cava"]	{"dice":1.0,"jaccard":1.0}
+["boon","dipped"]	{"dice":0.6666666667,"jaccard":0.5}
+["boon","cava"]	{"dice":0.4,"jaccard":0.25}
+["cava","dipped"]	{"dice":0.4,"jaccard":0.25}

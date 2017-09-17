@@ -1,0 +1,560 @@
+{
+ "cells": [
+  {
+   "cell_type": "markdown",
+   "metadata": {
+    "toc": "true"
+   },
+   "source": [
+    "# Table of Contents\n",
+    " <p><div class=\"lev1 toc-item\"><a data-toc-modified-id=\"-MIDS---w261-Machine-Learning-At-Scale--1\" href=\"#-MIDS---w261-Machine-Learning-At-Scale-\"><span class=\"toc-item-num\">1&nbsp;&nbsp;</span> MIDS - w261 Machine Learning At Scale </a></div><div class=\"lev2 toc-item\"><a data-toc-modified-id=\"Assignment---HW10-11\" href=\"#Assignment---HW10\"><span class=\"toc-item-num\">1.1&nbsp;&nbsp;</span>Assignment - HW10</a></div><div class=\"lev1 toc-item\"><a data-toc-modified-id=\"Instructions-2\" href=\"#Instructions\"><span class=\"toc-item-num\">2&nbsp;&nbsp;</span>Instructions</a></div><div class=\"lev2 toc-item\"><a data-toc-modified-id=\"IMPORTANT-21\" href=\"#IMPORTANT\"><span class=\"toc-item-num\">2.1&nbsp;&nbsp;</span>IMPORTANT</a></div><div class=\"lev3 toc-item\"><a data-toc-modified-id=\"===-INSTRUCTIONS-for-SUBMISSIONS-===-211\" href=\"#===-INSTRUCTIONS-for-SUBMISSIONS-===\"><span class=\"toc-item-num\">2.1.1&nbsp;&nbsp;</span>=== INSTRUCTIONS for SUBMISSIONS ===</a></div><div class=\"lev1 toc-item\"><a data-toc-modified-id=\"Useful-References-3\" href=\"#Useful-References\"><span class=\"toc-item-num\">3&nbsp;&nbsp;</span>Useful References</a></div><div class=\"lev1 toc-item\"><a data-toc-modified-id=\"HW-Problems-4\" href=\"#HW-Problems\"><span class=\"toc-item-num\">4&nbsp;&nbsp;</span>HW Problems</a></div><div class=\"lev1 toc-item\"><a data-toc-modified-id=\"HW10.0:-Short-answer-questions-5\" href=\"#HW10.0:-Short-answer-questions\"><span class=\"toc-item-num\">5&nbsp;&nbsp;</span>HW10.0: Short answer questions</a></div><div class=\"lev1 toc-item\"><a data-toc-modified-id=\"HW10.1-WordCount-plus-sorting-6\" href=\"#HW10.1-WordCount-plus-sorting\"><span class=\"toc-item-num\">6&nbsp;&nbsp;</span>HW10.1 WordCount plus sorting</a></div><div class=\"lev1 toc-item\"><a data-toc-modified-id=\"HW10.1.1-7\" href=\"#HW10.1.1\"><span class=\"toc-item-num\">7&nbsp;&nbsp;</span>HW10.1.1</a></div><div class=\"lev1 toc-item\"><a data-toc-modified-id=\"HW10.2:-MLlib-centric-KMeans-8\" href=\"#HW10.2:-MLlib-centric-KMeans\"><span class=\"toc-item-num\">8&nbsp;&nbsp;</span>HW10.2: MLlib-centric KMeans</a></div><div class=\"lev1 toc-item\"><a data-toc-modified-id=\"HW10.3:-Homegrown-KMeans-in-Spark-9\" href=\"#HW10.3:-Homegrown-KMeans-in-Spark\"><span class=\"toc-item-num\">9&nbsp;&nbsp;</span>HW10.3: Homegrown KMeans in Spark</a></div><div class=\"lev1 toc-item\"><a data-toc-modified-id=\"HW10.4:-KMeans-Experiments-10\" href=\"#HW10.4:-KMeans-Experiments\"><span class=\"toc-item-num\">10&nbsp;&nbsp;</span>HW10.4: KMeans Experiments</a></div><div class=\"lev1 toc-item\"><a data-toc-modified-id=\"HW10.4.1:-Making-Homegrown-KMeans-more-efficient-11\" href=\"#HW10.4.1:-Making-Homegrown-KMeans-more-efficient\"><span class=\"toc-item-num\">11&nbsp;&nbsp;</span>HW10.4.1: Making Homegrown KMeans more efficient</a></div><div class=\"lev3 toc-item\"><a data-toc-modified-id=\"HINT:-have-a-look-at--this-linear-regression-notebook-1101\" href=\"#HINT:-have-a-look-at--this-linear-regression-notebook\"><span class=\"toc-item-num\">11.0.1&nbsp;&nbsp;</span>HINT: have a look at  <a target=\"_blank\" href=\"http://nbviewer.jupyter.org/urls/dl.dropbox.com/s/atzqkc0p1eajuz6/LinearRegression-Notebook-Challenge.ipynb\">this linear regression notebook</a></a></div><div class=\"lev1 toc-item\"><a data-toc-modified-id=\"HW10.5:-OPTIONAL-Weighted-KMeans-12\" href=\"#HW10.5:-OPTIONAL-Weighted-KMeans\"><span class=\"toc-item-num\">12&nbsp;&nbsp;</span>HW10.5: OPTIONAL Weighted KMeans</a></div><div class=\"lev1 toc-item\"><a data-toc-modified-id=\"HW10.6-OPTIONAL-Linear-Regression-13\" href=\"#HW10.6-OPTIONAL-Linear-Regression\"><span class=\"toc-item-num\">13&nbsp;&nbsp;</span>HW10.6 OPTIONAL Linear Regression</a></div><div class=\"lev1 toc-item\"><a data-toc-modified-id=\"HW10.6.1-OPTIONAL-Linear-Regression-14\" href=\"#HW10.6.1-OPTIONAL-Linear-Regression\"><span class=\"toc-item-num\">14&nbsp;&nbsp;</span>HW10.6.1 OPTIONAL Linear Regression</a></div><div class=\"lev1 toc-item\"><a data-toc-modified-id=\"HW10.7-OPTIONAL-Error-surfaces-15\" href=\"#HW10.7-OPTIONAL-Error-surfaces\"><span class=\"toc-item-num\">15&nbsp;&nbsp;</span>HW10.7 OPTIONAL Error surfaces</a></div>"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 1,
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "application/javascript": [
+       "/**********************************************************************************************\n",
+       "Known Mathjax Issue with Chrome - a rounding issue adds a border to the right of mathjax markup\n",
+       "https://github.com/mathjax/MathJax/issues/1300\n",
+       "A quick hack to fix this based on stackoverflow discussions: \n",
+       "http://stackoverflow.com/questions/34277967/chrome-rendering-mathjax-equations-with-a-trailing-vertical-line\n",
+       "**********************************************************************************************/\n",
+       "\n",
+       "$('.math>span').css(\"border-left-color\",\"transparent\")"
+      ],
+      "text/plain": [
+       "<IPython.core.display.Javascript object>"
+      ]
+     },
+     "metadata": {},
+     "output_type": "display_data"
+    }
+   ],
+   "source": [
+    "%%javascript\n",
+    "/**********************************************************************************************\n",
+    "Known Mathjax Issue with Chrome - a rounding issue adds a border to the right of mathjax markup\n",
+    "https://github.com/mathjax/MathJax/issues/1300\n",
+    "A quick hack to fix this based on stackoverflow discussions: \n",
+    "http://stackoverflow.com/questions/34277967/chrome-rendering-mathjax-equations-with-a-trailing-vertical-line\n",
+    "**********************************************************************************************/\n",
+    "\n",
+    "$('.math>span').css(\"border-left-color\",\"transparent\")"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 2,
+   "metadata": {
+    "collapsed": true
+   },
+   "outputs": [],
+   "source": [
+    "%reload_ext autoreload\n",
+    "%autoreload 2"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "<h1> MIDS - w261 Machine Learning At Scale </h1>\n",
+    "__Course Lead:__ Dr James G. Shanahan (__email__ Jimi via  James.Shanahan _AT_ gmail.com)\n",
+    "\n",
+    "<h2>Assignment - HW10</h2>\n",
+    "\n",
+    "\n",
+    "---\n",
+    "__Name:__  *Your Name Goes Here*   \n",
+    "__Class:__ MIDS w261 (Section *Your Section Goes Here*, e.g., Fall 2016 Group 1)     \n",
+    "__Email:__  *Your UC Berkeley Email Goes Here*@iSchool.Berkeley.edu     \n",
+    "__StudentId__  123457    __End of StudentId__     \n",
+    "__Week:__   10\n",
+    "\n",
+    "__NOTE:__ please replace `1234567` with your student id above      \n",
+    "__Due Time:__ HW is due the Tuesday of the following week by 8AM (West coast time). I.e., Tuesday, April 4, 2017 in the case of this homework. \n",
+    "\n",
+    "# Instructions\n",
+    "\n",
+    "MIDS UC Berkeley, Machine Learning at Scale   \n",
+    "DATSCIW261 ASSIGNMENT #10\n",
+    "\n",
+    "Version 2017-3-24 \n",
+    "\n",
+    "\n",
+    "## IMPORTANT\n",
+    "\n",
+    "This homework can be completed locally on your computer. \n",
+    "\n",
+    "### === INSTRUCTIONS for SUBMISSIONS ===   \n",
+    "Follow the instructions for submissions carefully.\n",
+    "\n",
+    "Each student has a `HW-<user>` repository for all assignments.   \n",
+    "\n",
+    "Click this link to enable you to create a github repo within the MIDS261 Classroom:   \n",
+    "https://classroom.github.com/assignment-invitations/3b1d6c8e58351209f9dd865537111ff8   \n",
+    "and follow the instructions to create a HW repo.\n",
+    "\n",
+    "Push the following to your HW github repo into the master branch:\n",
+    "* Your local HW6 directory. Your repo file structure should look like this:\n",
+    "\n",
+    "```\n",
+    "HW-<user>\n",
+    "    --HW3\n",
+    "       |__MIDS-W261-HW-03-<Student_id>.ipynb\n",
+    "       |__MIDS-W261-HW-03-<Student_id>.pdf\n",
+    "       |__some other hw3 file\n",
+    "    --HW4\n",
+    "       |__MIDS-W261-HW-04-<Student_id>.ipynb\n",
+    "       |__MIDS-W261-HW-04-<Student_id>.pdf\n",
+    "       |__some other hw4 file\n",
+    "    etc..\n",
+    "```    "
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "# Useful References\n",
+    "\n",
+    "* Karau, Holden, Konwinski, Andy, Wendell, Patrick, & Zaharia, Matei. (2015). Learning Spark: Lightning-fast big data analysis. Sebastopol, CA: O’Reilly Publishers.\n",
+    "* Hastie, Trevor, Tibshirani, Robert, & Friedman, Jerome. (2009). The elements of statistical learning: Data mining, inference, and prediction (2nd ed.). Stanford, CA: Springer Science+Business Media. (Download for free [here](http://statweb.stanford.edu/~tibs/ElemStatLearn/printings/ESLII_print10.pdf))"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "# HW Problems"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "# HW10.0: Short answer questions\n",
+    "\n",
+    "\n",
+    "__What is Apache Spark and how is it different to Apache Hadoop? __"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": []
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "__Fill in the blanks:__  \n",
+    "<hr>\n",
+    "   \n",
+    "__Spark API consists of interfaces to develop applications based on it in Java, ___ BLANK ___ languages (list languages). __\n",
+    "\n",
+    "__Using Spark, resource management can be done either in a single server instance or using a framework such as Mesos or ___ BLANK ___ in a distributed manner. __\n",
+    "\n",
+    "<hr>"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "__What is an RDD and show a fun example of creating one and bringing the first element back to the driver program. __"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": []
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "# HW10.1 WordCount plus sorting\n",
+    "\n",
+    "The following notebooks will be useful to jumpstart this collection of Homework exercises:\n",
+    "\n",
+    "\n",
+    "* [Example Notebook with Debugging tactics in Spark](http://nbviewer.jupyter.org/urls/dl.dropbox.com/s/jqjllp8kmf1eolk/WordCountDebugging-Example.ipynb)\n",
+    "* [Word Count Quiz](http://nbviewer.jupyter.org/urls/dl.dropbox.com/s/vgmpivsi4rvqz0s/WordCountQuiz.ipynb)\n",
+    "* [Work Count Solution](http://nbviewer.jupyter.org/urls/dl.dropbox.com/s/dxv3dmp1vluuo8i/WordCountQuiz-Solution.ipynb)\n",
+    "\n",
+    "---\n",
+    "In Spark write the code to count how often each word appears in a text document (or set of documents). Please use this homework document (with no solutions in it) as a the example document to run an experiment.  Report the following: \n",
+    "* provide a sorted list of tokens in decreasing order of frequency of occurence limited to [top 20 most frequent only] and [bottom 10 least frequent]. \n",
+    "\n",
+    "\n",
+    "__OPTIONAL__ \n",
+    "Feel free to do a secondary sort where words with the same frequncy are sorted alphanumerically increasing. Please refer to the [following notebook](http://nbviewer.jupyter.org/urls/dl.dropbox.com/s/uu5afr3ufpm9fy8/SecondarySort.ipynb)\n",
+    " for examples of secondary sorts in Spark. Please provide the following [top 20 most frequent terms only] and [bottom 10 least frequent terms]\n",
+    "\n",
+    "__NOTE__ [Please incorporate all referenced notebooks directly into this master notebook as cells for HW submission. I.e., HW submissions should comprise of just one notebook]__"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 53,
+   "metadata": {
+    "collapsed": true
+   },
+   "outputs": [],
+   "source": [
+    "# START STUDENT CODE 10.1\n",
+    "# (ADD CELLS AS NEEDED)\n",
+    "\n",
+    "# END STUDENT CODE 10.1"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "# HW10.1.1\n",
+    "\n",
+    "Modify the above word count code to count words that begin with lower case letters (a-z) and report your findings. Again sort the output words in decreasing order of frequency.\n"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 58,
+   "metadata": {
+    "collapsed": true
+   },
+   "outputs": [],
+   "source": [
+    "# START STUDENT CODE 10.1.1\n",
+    "# (ADD CELLS AS NEEDED)\n",
+    "\n",
+    "# END STUDENT CODE 10.1.1"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "# HW10.2: MLlib-centric KMeans\n",
+    "\n",
+    "Using the following  MLlib-centric KMeans code snippet: \n",
+    "\n",
+    "<pre>\n",
+    "from pyspark.mllib.clustering import KMeans, KMeansModel\n",
+    "from numpy import array\n",
+    "from math import sqrt\n",
+    "\n",
+    "\n",
+    "# Load and parse the data\n",
+    "# NOTE  kmeans_data.txt is available here \n",
+    "#          https://www.dropbox.com/s/q85t0ytb9apggnh/kmeans_data.txt?dl=0 \n",
+    "data = sc.textFile(\"kmeans_data.txt\")  \n",
+    "parsedData = data.map(lambda line: array([float(x) for x in line.split(' ')]))\n",
+    "\n",
+    "# Build the model (cluster the data)\n",
+    "clusters = KMeans.train(parsedData, 2, maxIterations=10,\n",
+    "        runs=10, initializationMode=\"random\")\n",
+    "\n",
+    "# Evaluate clustering by computing Within Set Sum of Squared Errors\n",
+    "def error(point):\n",
+    "    center = clusters.centers[clusters.predict(point)]\n",
+    "    return sqrt(sum([x**2 for x in (point - center)]))\n",
+    "\n",
+    "WSSSE = parsedData.map(lambda point: error(point)).reduce(lambda x, y: x + y)\n",
+    "print(\"Within Set Sum of Squared Error = \" + str(WSSSE))\n",
+    "\n",
+    "# Save and load model\n",
+    "clusters.save(sc, \"myModelPath\")\n",
+    "sameModel = KMeansModel.load(sc, \"myModelPath\")\n",
+    "\n",
+    "</pre>\n",
+    "\n",
+    "__NOTE__ <p> The  __kmeans_data.txt__ is available here https://www.dropbox.com/s/q85t0ytb9apggnh/kmeans_data.txt?dl=0 \n",
+    "\n",
+    "__TASKS__\n",
+    "* Run this code snippet and list the clusters that your find.\n",
+    "* compute the Within Set Sum of Squared Errors for the found clusters. Comment on your findings."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 61,
+   "metadata": {
+    "collapsed": true
+   },
+   "outputs": [],
+   "source": [
+    "# START STUDENT CODE 10.2\n",
+    "# (ADD CELLS AS NEEDED)\n",
+    "\n",
+    "# END STUDENT CODE 10.2"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "# HW10.3: Homegrown KMeans in Spark \n",
+    "\n",
+    "Download the following KMeans [notebook](http://nbviewer.jupyter.org/urls/dl.dropbox.com/s/3nsthvp8g2rrrdh/EM-Kmeans.ipynb).\n",
+    "\n",
+    "Generate 3 clusters with 100 (one hundred) data points per cluster (using the code provided). Plot the data.\n",
+    "Then run MLlib's Kmean implementation on this data  and report your results as follows:\n",
+    "\n",
+    "* plot the resulting clusters after 1 iteration, 10 iterations, after 20 iterations, after 100 iterations.\n",
+    "* in each plot please report the Within Set Sum of Squared Errors for the found clusters (as part of the title WSSSE). Comment on the progress of this measure as  the KMEans algorithms runs for more iterations. Then plot the WSSSE as a function of the iteration (1, 10, 20, 30, 40, 50, 100).\n",
+    "\n"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 1,
+   "metadata": {
+    "collapsed": true
+   },
+   "outputs": [],
+   "source": [
+    "# START STUDENT CODE 10.3\n",
+    "# (ADD CELLS AS NEEDED)\n",
+    "\n",
+    "# END STUDENT CODE 10.3"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "# HW10.4: KMeans Experiments\n",
+    "\n",
+    "Using this provided [homegrown Kmeans code](http://nbviewer.jupyter.org/urls/dl.dropbox.com/s/3nsthvp8g2rrrdh/EM-Kmeans.ipynb)   repeat the experiments in HW10.3. Explain any differences between the results in HW10.3 and HW10.4. "
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 65,
+   "metadata": {
+    "collapsed": true
+   },
+   "outputs": [],
+   "source": [
+    "# START STUDENT CODE 10.4\n",
+    "# (ADD CELLS AS NEEDED)\n",
+    "\n",
+    "# END STUDENT CODE 10.4"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "# HW10.4.1: Making Homegrown KMeans more efficient\n",
+    "\n",
+    "The above provided homegrown KMeans implentation in not the most efficient. How can you make it more efficient? Make this change in the code and show it work and comment on the gains you achieve. "
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "### HINT: have a look at  [this linear regression notebook](    http://nbviewer.jupyter.org/urls/dl.dropbox.com/s/atzqkc0p1eajuz6/LinearRegression-Notebook-Challenge.ipynb)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 70,
+   "metadata": {
+    "collapsed": true
+   },
+   "outputs": [],
+   "source": [
+    "# START STUDENT CODE 10.4.1\n",
+    "# (ADD CELLS AS NEEDED)\n",
+    "\n",
+    "# END STUDENT CODE 10.4.1"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "# HW10.5: OPTIONAL Weighted KMeans\n",
+    "\n",
+    "Using this provided [homegrown Kmeans code](http://nbviewer.jupyter.org/urls/dl.dropbox.com/s/3nsthvp8g2rrrdh/EM-Kmeans.ipynb), modify it to do a weighted KMeans and repeat the experiements in HW10.3. Explain  any differences between the results in HW10.3 and HW10.5.\n",
+    "\n",
+    "NOTE: Weight each example as follows using the inverse vector length (Euclidean norm): \n",
+    "\n",
+    "> weight(X)= 1/||X||, \n",
+    "\n",
+    "where ||X|| = SQRT(X.X)= SQRT(X1^2 + X2^2)\n",
+    "\n",
+    "Here X is vector made up of two values X1 and X2.\n",
+    "\n",
+    "__[Please incorporate all referenced notebooks directly into this master notebook as cells for HW submission. I.e., HW submissions should comprise of just one notebook]__"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 71,
+   "metadata": {
+    "collapsed": true
+   },
+   "outputs": [],
+   "source": [
+    "# START STUDENT CODE 10.5\n",
+    "# (ADD CELLS AS NEEDED)\n",
+    "\n",
+    "# END STUDENT CODE 10.5"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "# HW10.6 OPTIONAL Linear Regression\n",
+    "\n",
+    "Using [this linear regression notebook](    http://nbviewer.jupyter.org/urls/dl.dropbox.com/s/atzqkc0p1eajuz6/LinearRegression-Notebook-Challenge.ipynb):\n",
+    "\n",
+    "\n",
+    "* Generate 2 sets of data with 100 data points using the data generation code provided and plot each in separate plots. Call one the training set and the other the testing set.\n",
+    "\n",
+    "* Using MLLib's LinearRegressionWithSGD train up a linear regression model with the training dataset and evaluate with the testing set. What a good number of iterations for training the linear regression model? Justify with plots (e.g., plot MSE as a function of the number of iterations) and words. \n"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {
+    "collapsed": true
+   },
+   "outputs": [],
+   "source": [
+    "# START STUDENT CODE 10.6\n",
+    "# (ADD CELLS AS NEEDED)\n",
+    "\n",
+    "# END STUDENT CODE 10.6"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "# HW10.6.1 OPTIONAL Linear Regression\n",
+    "\n",
+    "In the notebook provided above, in the cell labeled \"Gradient descent (regularization)\".\n",
+    "\n",
+    "* Fill in the blanks and get this code to work for LASS0 and RIDGE linear regression.\n",
+    "\n",
+    "* Using the data from HW10.6.1 tune the hyper parameters of your LASS0 and RIDGE regression. Report your findings with words and plots."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 76,
+   "metadata": {
+    "collapsed": true
+   },
+   "outputs": [],
+   "source": [
+    "# START STUDENT CODE 10.6.1\n",
+    "# (ADD CELLS AS NEEDED)\n",
+    "\n",
+    "# END STUDENT CODE 10.6.1"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "# HW10.7 OPTIONAL Error surfaces\n",
+    "\n",
+    "Here is a link to R code with 1 test drivers that plots the linear regression model in  model space and in the domain space:\n",
+    "\n",
+    "> https://www.dropbox.com/s/3xc3kwda6d254l5/PlotModelAndDomainSpaces.R?dl=0\n",
+    "\n",
+    "Here is a sample output from this script: \n",
+    "      \n",
+    "> https://www.dropbox.com/s/my3tnhxx7fr5qs0/image%20%281%29.png?dl=0\n",
+    "\n",
+    "Please use this as inspiration and code a equivalent error surface and heatmap (with isolines) in Spark and show the trajectory of learning taken during gradient descent (after each n-iterations of Gradient Descent):\n",
+    "\n",
+    "\n",
+    "Using Spark and  Python (using the above R Script as inspiration), plot the error surface for the linear regression model using a heatmap and contour plot. \n",
+    "Also plot the current model in the original domain space for every 10th iteration.  Plot them side by side if possible  for each iteration: lefthand side plot is the model space(w0 and w01) and the righthand side plot is domain space (plot the corresponding model and training data in the problem domain space) with a final pair of graphs showing the entire trajectory in the model and domain space. Make sure to label your plots with iteration numbers, function, model space versus original domain space, MSE on the training data etc.\n",
+    "\n",
+    "Also plot the MSE as a function of each iteration (possibly every 10th iteration). Dont forget to label both axis and the graph also. __[Please incorporate all referenced notebooks directly into this master notebook as cells for HW submission. I.e., HW submissions should comprise of just one notebook]__\n",
+    "\n",
+    "\n",
+    "\n"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 79,
+   "metadata": {
+    "collapsed": true
+   },
+   "outputs": [],
+   "source": [
+    "# START STUDENT CODE 10.7\n",
+    "# (ADD CELLS AS NEEDED)\n",
+    "\n",
+    "# END STUDENT CODE 10.7"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {
+    "collapsed": true
+   },
+   "outputs": [],
+   "source": []
+  }
+ ],
+ "metadata": {
+  "kernelspec": {
+   "display_name": "Pyspark (2.0.2)",
+   "language": "python",
+   "name": "pyspark-2.0.2"
+  },
+  "language_info": {
+   "codemirror_mode": {
+    "name": "ipython",
+    "version": 2
+   },
+   "file_extension": ".py",
+   "mimetype": "text/x-python",
+   "name": "python",
+   "nbconvert_exporter": "python",
+   "pygments_lexer": "ipython2",
+   "version": "2.7.11"
+  },
+  "toc": {
+   "colors": {
+    "hover_highlight": "#DAA520",
+    "running_highlight": "#FF0000",
+    "selected_highlight": "#FFD700"
+   },
+   "moveMenuLeft": true,
+   "nav_menu": {
+    "height": "417px",
+    "width": "252px"
+   },
+   "navigate_menu": true,
+   "number_sections": true,
+   "sideBar": false,
+   "threshold": 4,
+   "toc_cell": true,
+   "toc_section_display": "block",
+   "toc_window_display": true
+  }
+ },
+ "nbformat": 4,
+ "nbformat_minor": 1
+}

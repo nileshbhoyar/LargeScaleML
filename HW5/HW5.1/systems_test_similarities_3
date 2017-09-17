@@ -1,0 +1,3 @@
+["DocA","DocB"]	{"dice":0.8,"jaccard":0.6666666667}
+["DocA","DocC"]	{"dice":0.5714285714,"jaccard":0.4}
+["DocB","DocC"]	{"dice":0.3333333333,"jaccard":0.2}
